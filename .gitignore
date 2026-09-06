@@ -1,4 +1,8 @@
 node_modules/
-package-lock.json
+www/
+android/.gradle/
+android/build/
+android/app/build/
+android/local.properties
 .DS_Store
 *.log

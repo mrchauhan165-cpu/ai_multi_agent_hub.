@@ -601,7 +601,6 @@
     getInvoiceCss().then(function (css) {
       var doc = '<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">' +
         '<title>' + esc((bill.docType === 'estimate' ? 'Estimate ' : 'Invoice ') + (bill.invoiceNo || '') + ' — ' + state.settings.shopName) + '</title>' +
-        '<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">' +
         '<style>' + css + '\nbody{margin:0;background:#f3f3f3;font-family:Inter,system-ui,sans-serif}' +
         '.sheet{background:#fff;margin:16px auto;padding:' + (state.preview.paper === 'thermal' ? '4mm 3mm' : '12mm') + ';width:' + (state.preview.paper === 'thermal' ? '80mm' : state.preview.paper === 'a5' ? '148mm' : state.preview.paper === 'letter' ? '216mm' : '210mm') + ';max-width:100%;box-sizing:border-box;box-shadow:0 2px 12px rgba(0,0,0,.12)}' +
         '@media print{body{background:#fff}.sheet{margin:0;box-shadow:none;width:auto;padding:0;page-break-after:always}.sheet:last-child{page-break-after:auto}}' +

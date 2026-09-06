@@ -6,9 +6,11 @@ rates, wastage / value addition, making charges, stone charges, old-metal
 exchange, part payments, and print-ready output on A4, A5, Letter or 80 mm
 thermal paper.
 
-No build step, no server, no accounts. Open `index.html` and start billing.
-All data lives in the browser (`localStorage`) and can be backed up / restored
-as JSON.
+The same billing experience is available as a native Android APK and as a
+static website. The Android app bundles every web asset inside the APK, needs
+no server, and continues working without internet. Bills, settings, rates,
+images, and drafts are stored locally in the app's private WebView storage and
+can be backed up / restored as JSON.
 
 ## Features
 
@@ -60,8 +62,40 @@ python3 -m http.server 8080
 # then open http://localhost:8080/
 ```
 
-It works fully offline; the Google Fonts link is optional (falls back to
-system fonts).
+It works fully offline and uses device/system fonts; there are no remote runtime assets.
+
+## Android APK
+
+This repository contains a native Capacitor Android project in `android/`.
+Use Node.js 22 and JDK 21, then run:
+
+```bash
+npm ci
+npm test
+npm run android:apk
+```
+
+The installable debug APK is written to:
+
+```
+android/app/build/outputs/apk/debug/app-debug.apk
+```
+
+For Android Studio development, run `npm run android:open`. After changing
+`index.html`, `css/`, or `js/`, run `npm run android:sync` to copy those assets
+into the native project. The generated `www/` staging directory is intentionally
+ignored; the synced assets in the Android project are committed so it can also
+be opened directly in Android Studio.
+
+GitHub Actions also tests and builds an APK on pull requests, pushes to `main`,
+and manual runs. Download `jewellery-bill-debug-apk` from the workflow run's
+Artifacts section. A Play Store/release APK or AAB must be signed with the
+owner's private release keystore; no private signing credentials belong in this
+repository.
+
+Android data is private to the installed app and persists across app restarts
+and upgrades. Android removes it when the app is uninstalled or its storage is
+cleared, so use **Settings → Backup** before either action.
 
 ## Project layout
 
@@ -75,6 +109,10 @@ js/store.js        localStorage persistence, numbering, backup/restore
 js/invoice.js      Invoice HTML renderer + text summary
 js/app.js          UI controller
 tests/             Node test-suite for the engine and a jsdom integration run
+android/           Native Android Studio/Gradle project
+capacitor.config.json  Native wrapper configuration
+scripts/copy-web.js    Stages web assets before Capacitor sync
+.github/workflows/android.yml  CI APK build
 ```
 
 ## Pricing model
