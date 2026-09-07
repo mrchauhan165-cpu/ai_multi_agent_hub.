@@ -63,6 +63,32 @@ test('app chrome pads itself clear of the status and navigation bars', () => {
   assert.match(ruleBodies(css, '.editor-summary')[0], /top: calc\(76px \+ var\(--safe-top\)\)/);
 });
 
+test('android resource XML has no double hyphen inside a comment', () => {
+  // The XML spec forbids "--" inside comments and aapt2 fails the build with
+  // "The string \"--\" is not permitted within comments". This runs in the Node
+  // suite so it is caught before :app:mergeDebugResources ever gets a chance to.
+  const roots = [
+    path.join(ROOT, 'android', 'app', 'src', 'main', 'res'),
+    path.join(ROOT, 'android', 'app', 'src', 'main', 'AndroidManifest.xml'),
+  ];
+  const files = [];
+  const walk = (p) => {
+    const st = fs.statSync(p);
+    if (st.isFile()) return files.push(p);
+    for (const entry of fs.readdirSync(p)) walk(path.join(p, entry));
+  };
+  roots.forEach(walk);
+
+  const offenders = [];
+  for (const file of files.filter((f) => f.endsWith('.xml'))) {
+    for (const body of fs.readFileSync(file, 'utf8').matchAll(/<!--([\s\S]*?)-->/g)) {
+      if (body[1].includes('--')) offenders.push(path.relative(ROOT, file));
+    }
+  }
+  assert.ok(files.length > 10, 'resource files were actually scanned (' + files.length + ')');
+  assert.deepEqual(offenders, []);
+});
+
 test('android theme keeps the bars legible over the white window background', () => {
   const colors = read('android', 'app', 'src', 'main', 'res', 'values', 'colors.xml');
   assert.match(colors, /<color name="systemBarBackground">#FFFFFF<\/color>/);

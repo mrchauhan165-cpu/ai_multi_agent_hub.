@@ -3,8 +3,10 @@
     <!--
       Painted behind the system bars on Android 15+ (API 35), where edge-to-edge
       is enforced and the bars are always transparent. It matches the app's
-      topbar (css/app.css --surface) so the header looks continuous with the
-      status bar instead of showing a stray dark strip above it.
+      topbar surface colour from css/app.css, so the header reads as continuous
+      with the status bar instead of showing a stray dark strip above it.
+      (XML comments may not contain a double hyphen, so the CSS custom property
+      is deliberately not named here.)
     -->
     <color name="systemBarBackground">#FFFFFF</color>
 </resources>
