@@ -97,6 +97,31 @@ Android data is private to the installed app and persists across app restarts
 and upgrades. Android removes it when the app is uninstalled or its storage is
 cleared, so use **Settings → Backup** before either action.
 
+### Status bar and safe areas
+
+Android 15 (API 35) forces every app that targets SDK 35 to draw edge-to-edge,
+so the WebView runs under the status and navigation bars and the app's topbar
+ended up behind the clock. Two settings keep the content clear of them:
+
+- `capacitor.config.json` sets `android.adjustMarginsForEdgeToEdge` to `auto`,
+  which makes Capacitor margin the WebView in by the system-bar and
+  display-cutout insets on API 35+ and consume those insets, so nothing is
+  drawn underneath the bars.
+- `index.html` declares `viewport-fit=cover` and `css/app.css` pads the topbar,
+  sidebar, sticky summary, mobile total bar and toasts with
+  `env(safe-area-inset-*)`. That is what protects the same layout in a phone
+  browser and on iOS; inside the Android app the insets are already consumed,
+  so these resolve to `0px` and no padding is applied twice.
+
+The strips left behind the now-transparent bars show the window background from
+`android/app/src/main/res/values/styles.xml` (`@color/systemBarBackground`,
+white, matching the topbar), with `windowLightStatusBar` /
+`windowLightNavigationBar` keeping the system icons dark so they stay readable.
+`Window.setStatusBarColor()` and the old `overlaysWebView` escape hatch are
+no-ops for apps targeting SDK 35, and Android 16 removed the
+`windowOptOutEdgeToEdgeEnforcement` opt-out, so the insets are handled rather
+than avoided.
+
 ## Project layout
 
 ```

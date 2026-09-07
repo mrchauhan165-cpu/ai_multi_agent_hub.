@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--
+      Painted behind the system bars on Android 15+ (API 35), where edge-to-edge
+      is enforced and the bars are always transparent. It matches the app's
+      topbar (css/app.css --surface) so the header looks continuous with the
+      status bar instead of showing a stray dark strip above it.
+    -->
+    <color name="systemBarBackground">#FFFFFF</color>
+</resources>
