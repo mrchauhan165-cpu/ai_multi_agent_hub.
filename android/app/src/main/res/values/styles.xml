@@ -15,11 +15,11 @@
         <item name="android:background">@null</item>
         <!--
           Android 15 (API 35) forces edge-to-edge, so the status and navigation
-          bars are transparent and cannot be recoloured any more. Capacitor
-          keeps the WebView clear of them (capacitor.config.json ->
-          android.adjustMarginsForEdgeToEdge = "auto"), and the strips they
-          leave behind show this window background. windowLightStatusBar keeps
-          the clock/battery glyphs dark so they stay legible on the white bar.
+          bars are transparent and cannot be recoloured any more. MainActivity
+          pads the WebView clear of them with a WindowInsets listener on the
+          content view, and the strips they leave behind show this window
+          background. windowLightStatusBar keeps the clock/battery glyphs dark
+          so they stay legible on the white bar.
         -->
         <item name="android:windowBackground">@color/systemBarBackground</item>
         <item name="android:windowLightStatusBar">true</item>
